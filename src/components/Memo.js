@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { useAppReducer } from "../AppContext";
 import styles from "./AddItemForm.module.scss";
+import TextareaAutosize from "react-textarea-autosize";
+
 // import SimpleMDE from "simplemde";
 
 // import s from "../js/renderer.js";
@@ -24,12 +26,12 @@ function Memo({ item }) {
     // <TextInput className={styles.form}
     // onChange={ e => addItem(e.currentTarget.value)}
     // placeholder="Start typing..." >  </TextInput>
-    <textarea
+    <TextareaAutosize
       class={styles.textarea}
       onChange={(e) => livetime(e.currentTarget.value)}
       id="text-area"
       ref={inputRef}
-      placeholder="Add here"
+      placeholder="메모작성"
       value={item.memo}
     />
   );
