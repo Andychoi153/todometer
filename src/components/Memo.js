@@ -31,7 +31,6 @@ function Memo({ item }) {
       ref={inputRef}
       placeholder="Add here"
       value={item.memo}
-      autoFocus
     />
   );
 }
