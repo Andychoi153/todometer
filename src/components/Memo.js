@@ -9,19 +9,6 @@ function Memo({ item }) {
   const dispatch = useAppReducer();
 
   let inputRef = useRef();
-  function addItem(e) {
-    const newItem = {
-      text: item.text,
-      key: item.key,
-      status: item.status,
-      memo: inputRef.current.value,
-    };
-
-    if (!!newItem.memo.trim()) {
-      dispatch({ type: "ADD_MEMO", item: newItem });
-    }
-    e.preventDefault();
-  }
 
   function livetime(value) {
     const newItem = {
@@ -30,27 +17,21 @@ function Memo({ item }) {
       status: item.status,
       memo: value,
     };
-
-    if (!!newItem.memo.trim()) {
-      dispatch({ type: "ADD_MEMO", item: newItem });
-    }
+    dispatch({ type: "ADD_MEMO", item: newItem });
   }
 
   return (
     // <TextInput className={styles.form}
     // onChange={ e => addItem(e.currentTarget.value)}
     // placeholder="Start typing..." >  </TextInput>
-    <form className={styles.form} onSubmit={addItem}>
-      <input
-        ref={inputRef}
-        onChange={(e) => livetime(e.currentTarget.value)}
-        id="text-area"
-        ref={inputRef}
-        placeholder="Note"
-        value={item.memo}
-        autoFocus
-      />
-    </form>
+    <textarea
+      onChange={(e) => livetime(e.currentTarget.value)}
+      id="text-area"
+      ref={inputRef}
+      placeholder="Add here"
+      value={item.memo}
+      autoFocus
+    />
   );
 }
 
