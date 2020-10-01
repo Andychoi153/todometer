@@ -1,5 +1,16 @@
 @import "../styles/variables";
-
+.textarea {
+  margin: 0 0 10px 0;
+  padding: 20px 70px 20px 20px;
+  width: 100%;
+  background: $input-color;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: $font-color;
+  font-size: 15px;
+  outline: none;
+}
 .form {
   position: relative;
   input {
@@ -15,6 +26,7 @@
     font-size: $item-font-size;
     outline: none;
   }
+
   button {
     position: absolute;
     top: 20px;

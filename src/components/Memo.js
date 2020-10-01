@@ -25,6 +25,7 @@ function Memo({ item }) {
     // onChange={ e => addItem(e.currentTarget.value)}
     // placeholder="Start typing..." >  </TextInput>
     <textarea
+      class={styles.textarea}
       onChange={(e) => livetime(e.currentTarget.value)}
       id="text-area"
       ref={inputRef}
