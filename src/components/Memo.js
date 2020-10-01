@@ -9,20 +9,6 @@ function Memo({ item }) {
   const dispatch = useAppReducer();
   
   let inputRef = useRef();
-  function addItem(e) {
-    const newItem = {
-        text: item.text,
-        key: item.key,
-        status: item.status,
-        memo: inputRef.current.value,
-      };
-
-    if (!!newItem.memo.trim()) {
-      dispatch({ type: "ADD_MEMO", item: newItem });
-    }
-    e.preventDefault();
-
-  }
 
   function livetime(value) {
     const newItem = {
@@ -31,11 +17,7 @@ function Memo({ item }) {
         status: item.status,
         memo: value,
       };
-
-    if (!!newItem.memo.trim()) {
       dispatch({ type: "ADD_MEMO", item: newItem });
-    }
-
   }
 
   return (
