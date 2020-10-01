@@ -11,15 +11,13 @@ export function getTimepercentage(nd) {
 
   switch (remote.getGlobal("notificationSettings").reminderNotification) {
     case "hour":
-      percentage = 1 - nd.getMinutes() / 60;
+      percentage = 1 - (nd.getMinutes() / 60);
       break;
     case "halfhour":
-      left = nd.getMinutes() % 30;
-      percentage = 1 - left / 30;
+      percentage = 1 - ((nd.getMinutes() % 30) / 30);
       break;
     case "quarterhour":
-      left = nd.getMinutes() % 15;
-      percentage = 1 - left / 15;
+      percentage = 1 - ((nd.getMinutes() % 15) / 15);
       break;
     default:
       break;
