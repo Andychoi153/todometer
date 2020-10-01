@@ -5,7 +5,7 @@ const {
   dialog,
   powerMonitor,
   shell,
-  Notification
+  Notification,
 } = require("electron");
 const Store = require("electron-store");
 const isDev = require("electron-is-dev");
@@ -17,13 +17,13 @@ const store = new Store();
 
 global.notificationSettings = {
   resetNotification: store.get("reset") || true,
-  reminderNotification: store.get("reminder") || "hour"
+  reminderNotification: store.get("reminder") || "hour",
 };
 
 let mainWindow = {
   show: () => {
     console.log("show");
-  }
+  },
 }; // temp object while app loads
 let willQuit = false;
 
@@ -36,8 +36,8 @@ function createWindow() {
     backgroundColor: "#403F4D",
     icon: path.join(__dirname, "assets/png/128x128.png"),
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   mainWindow.loadURL(
@@ -45,6 +45,7 @@ function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+  mainWindow.webContents.openDevTools();
 }
 
 function menuSetup() {
@@ -61,18 +62,18 @@ function menuSetup() {
               message: "todometer is built by @cassidoo",
               detail:
                 "You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.",
-              icon: path.join(__dirname, "assets/png/64x64.png")
+              icon: path.join(__dirname, "assets/png/64x64.png"),
             });
-          }
+          },
         },
         {
           label: "Contribute (v" + version + ")",
           click: () => {
             shell.openExternal("https://github.com/cassidoo/todometer");
-          }
+          },
         },
         {
-          type: "separator"
+          type: "separator",
         },
         // {
         //   /* For debugging */
@@ -86,9 +87,9 @@ function menuSetup() {
           accelerator: "CommandOrControl+Q",
           click: () => {
             app.quit();
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       label: "Edit",
@@ -99,8 +100,8 @@ function menuSetup() {
         { role: "copy" },
         { role: "paste" },
         { role: "delete" },
-        { role: "selectall" }
-      ]
+        { role: "selectall" },
+      ],
     },
     {
       label: "View",
@@ -114,13 +115,13 @@ function menuSetup() {
         //   }
         // },
         {
-          type: "separator"
+          type: "separator",
         },
         { role: "reload" },
         { role: "togglefullscreen" },
         { role: "minimize" },
-        { role: "close" }
-      ]
+        { role: "close" },
+      ],
     },
     {
       label: "Notifications",
@@ -129,10 +130,10 @@ function menuSetup() {
           label: "Enable reset notification",
           type: "checkbox",
           checked: store.get("reset"),
-          click: e => {
+          click: (e) => {
             global.notificationSettings.resetNotification = e.checked;
             store.set("reset", e.checked);
-          }
+          },
         },
         {
           label: "Reminder notifications",
@@ -141,60 +142,61 @@ function menuSetup() {
               label: "Never",
               type: "radio",
               checked: store.get("reminder") === "never",
-              click: e => {
+              click: (e) => {
                 if (e.checked) {
                   global.notificationSettings.reminderNotification = "never";
                   store.set("reminder", "never");
                 }
-              }
+              },
             },
             {
               label: "Every 15 minutes",
               type: "radio",
               checked: store.get("reminder") === "quarterhour",
-              click: e => {
+              click: (e) => {
                 if (e.checked) {
-                  global.notificationSettings.reminderNotification = "quarterhour";
+                  global.notificationSettings.reminderNotification =
+                    "quarterhour";
                   store.set("reminder", "quarterhour");
                 }
-              }
+              },
             },
             {
               label: "Every 30 minutes",
               type: "radio",
               checked: store.get("reminder") === "halfhour",
-              click: e => {
+              click: (e) => {
                 if (e.checked) {
                   global.notificationSettings.reminderNotification = "halfhour";
                   store.set("reminder", "halfhour");
                 }
-              }
+              },
             },
             {
               label: "Every hour",
               type: "radio",
               checked: store.get("reminder") === "hour",
-              click: e => {
+              click: (e) => {
                 if (e.checked) {
                   mainWindow.reminderNotification = "hour";
                   store.set("reminder", "hour");
                 }
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         {
           label: "Show example notification",
-          click: e => {
+          click: (e) => {
             let exNotification = new Notification({
               title: "todometer reminder!",
-              body: "Here's an example todometer notification!"
+              body: "Here's an example todometer notification!",
             });
             exNotification.show();
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   ];
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
@@ -210,7 +212,7 @@ app.on("ready", () => {
 
   // On Mac, this will hide the window
   // On Windows, the app will close and quit
-  mainWindow.on("close", e => {
+  mainWindow.on("close", (e) => {
     if (willQuit || process.platform === "win32") {
       mainWindow = null;
       app.quit();
