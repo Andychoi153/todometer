@@ -4,7 +4,6 @@ import { useItems, useAppReducer } from "../AppContext";
 import styles from "./Progress.module.scss";
 import { remote } from "electron";
 
-
 // Timer bar for reset todo items
 function Timer() {
   const dispatch = useAppReducer();
@@ -18,31 +17,31 @@ function Timer() {
   let completedPercentage = completedAmount / totalAmount;
   let timePercent = 1;
   if (timePercentage.length > 0) {
-    timePercent = timePercentage[0].timePercentage
+    timePercent = timePercentage[0].timePercentage;
   } else {
     const newItem = {
       timePercentage: 1,
       key: 0,
-      status: "timer"
+      status: "timer",
     };
     dispatch({ type: "ADD_ITEM", item: newItem });
     timePercent = 1;
-  };
+  }
 
   return (
     <div className={styles.progress}>
       {timePercent < 0.5 ? (
-        
         <div
           className={`${styles.progressbar} ${styles.paused}`}
           style={{ width: `${timePercent * 100}%` }}
         ></div>
-
-      ):
-        ( <div
-            className={`${styles.progressbar} ${styles.completed}`}
-            style={{ width: `${timePercent * 100}%` }}
-          ></div>)};
+      ) : (
+        <div
+          className={`${styles.progressbar} ${styles.completed}`}
+          style={{ width: `${timePercent * 100}%` }}
+        ></div>
+      )}
+      ;
     </div>
   );
 }
