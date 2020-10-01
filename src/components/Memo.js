@@ -42,10 +42,7 @@ function Memo({ item }) {
     // <TextInput className={styles.form} 
     // onChange={ e => addItem(e.currentTarget.value)} 
     // placeholder="Start typing..." >  </TextInput>
-    <form className={styles.form} onSubmit={addItem}>
     <input onChange={ e => livetime(e.currentTarget.value)} id="text-area" ref={inputRef} placeholder="Add here" value={item.memo} autoFocus />
-    <button type="submit" />
-  </form>
   );
 }
 
