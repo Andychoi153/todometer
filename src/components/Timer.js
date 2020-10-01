@@ -1,5 +1,6 @@
 import React from "react";
 import { useItems, useAppReducer } from "../AppContext";
+import arrow from "../img/sandclock.svg";
 
 import styles from "./Progress.module.scss";
 import { remote } from "electron";
@@ -30,6 +31,7 @@ function Timer() {
 
   return (
     <div className={styles.progress}>
+      <img src={arrow} alt="Sand Timer" />
       {timePercent < 0.5 ? (
         <div
           className={`${styles.progressbar} ${styles.paused}`}
