@@ -1,6 +1,7 @@
 import React from "react";
 import { useItems, useAppReducer } from "../AppContext";
 import sandclock from "../img/sandclock.svg";
+import istyles from "./Item.module.scss";
 
 import styles from "./Timer.module.scss";
 import { remote } from "electron";
@@ -23,7 +24,7 @@ global.notificationSettings = {
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: "80%",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -63,7 +64,7 @@ function Timer() {
 
 
   return (
-    <div tabIndex="0">
+    <div>
       <img src={sandclock} className={styles.sandclock} />
       <FormControl className={classes.formControl}>
       <InputLabel id="demo-simple-select-filled-label">Reset Term</InputLabel>
@@ -77,8 +78,8 @@ function Timer() {
           <MenuItem value={"halfhour"}>Every 30 minuites</MenuItem>
           <MenuItem value={"hour"}>Every 1 hours</MenuItem>
         </Select>
-        </FormControl>
-      <div className={styles.progress}>
+        <br></br>
+        <div className={styles.progress}>
       {timePercent < 0.5 ? (
         <div
           className={`${styles.progressbar} ${styles.paused}`}
@@ -90,10 +91,9 @@ function Timer() {
           style={{ width: `${timePercent * 100}%` }}
         ></div>
       )}
-      ;
     </div>
+        </FormControl>
     </div>
-
   );
 }
 

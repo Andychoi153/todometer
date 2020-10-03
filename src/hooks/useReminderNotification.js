@@ -24,7 +24,7 @@ function getTimeCondition(nd) {
 }
 
 export default function useReminderNotification() {
-  const { pending, paused, completed } = useItems();
+  const { pending, routine } = useItems();
   const dispatch = useAppReducer();
 
   useEffect(() => {
@@ -33,11 +33,11 @@ export default function useReminderNotification() {
       dispatch({ type: "TIME_CHECK" });
       // sends a notification if reminder notifications are enabled,
       // and todos are not completed
-      if (getTimeCondition(nd) && completed.length > 0) {
+      if (getTimeCondition(nd) && ( routine.length > 0 || pending.length > 0)) {
         let text = `Don't forget, you have ${
-          pending.length + paused.length
+          pending.length + routine.length
         } tasks to do today (${pending.length} incomplete, ${
-          paused.length
+          routine.length
         } paused for later)`;
         dispatch({ type: "RESET_ALL" });
         window.location.reload();
@@ -48,5 +48,5 @@ export default function useReminderNotification() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [pending.length, paused.length]);
+  }, [pending.length, routine.length]);
 }
