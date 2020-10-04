@@ -4,20 +4,28 @@ import { format } from "date-fns";
 import { remote } from "electron";
 
 export const AppContext = createContext();
+const Slack = require('slack-node'); 
+
 
 export function getTimepercentage(nd) {
   let percentage = 1;
   let left = 0;
-
+  let mins = 0
   switch (remote.getGlobal("notificationSettings").reminderNotification) {
     case "hour":
+      mins = (nd.getMinutes() % 60);
+      left = mins + nd.getSeconds() / 60;
       percentage = 1 - (nd.getMinutes() / 60);
       break;
     case "halfhour":
-      percentage = 1 - ((nd.getMinutes() % 30) / 30);
+      mins = (nd.getMinutes() % 30);
+      left = mins + nd.getSeconds() / 60;
+      percentage = 1 - (left / 30);
       break;
     case "quarterhour":
-      percentage = 1 - ((nd.getMinutes() % 15) / 15);
+      mins = (nd.getMinutes() % 15);
+      left = mins + nd.getSeconds() / 60;
+      percentage = 1 - (left / 15);
       break;
     default:
       break;
@@ -46,8 +54,24 @@ export function useItems() {
   return { pending, paused, completed, routine, logging, timePercentage };
 }
 
+
+function sendMessage(message) {
+let webhook_uri = remote.getGlobal("notificationSettings").webhook_uri;
+let channel = remote.getGlobal("notificationSettings").channel;
+let slack = new Slack();
+slack.setWebhook(webhook_uri);
+  slack.webhook({
+    channel: channel,
+    username: "webhookbot",
+    text: message
+  }, function(err, response) {
+    console.log(response);
+  });
+}
+
 const appStateReducer = (state, action) => {
   let nd = new Date();
+  
 
   let currentDate = {
     day: format(nd, "dd"),
@@ -62,11 +86,13 @@ const appStateReducer = (state, action) => {
     case "ADD_ITEM": {
       const newState = { ...state, items: state.items.concat(action.item) };
       saveState(newState);
+      sendMessage(`새로운 Todo ${action.item.text}가 생성 되었습니다.`)
       return newState;
     }
     case "UPDATE_ITEM": {
       const newItems = state.items.map((i) => {
         if (i.key === action.item.key) {
+          sendMessage(`${i.text} 가 ${i.status} 상태에서 ${action.item.status} 상태로 업데이트 되었습니다.`)
           return Object.assign({}, i, {
             status: action.item.status,
           });
@@ -82,6 +108,7 @@ const appStateReducer = (state, action) => {
         ...state,
         items: state.items.filter((item) => item.key !== action.item.key),
       };
+      sendMessage(`${action.item.text}가 삭제 되었습니다.`)
       saveState(newState);
       return newState;
     }
@@ -104,6 +131,7 @@ const appStateReducer = (state, action) => {
             status: "logging",
           };
           updateItems = updateItems.concat(newItem);
+          sendMessage(`Todo ${i.text}가 기록으로 남습니다.`)
         });
       const newState = { ...state, items: updateItems, date: currentDate };
       saveState(newState);
