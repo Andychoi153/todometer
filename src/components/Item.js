@@ -53,32 +53,6 @@ function Item({ item }) {
       dispatch({ type: "UPDATE_ITEM", item: loggingItem });
     }
   }
-  function createBrowserWindow() {
-    const remote = require("electron").remote;
-    const BrowserWindow = remote.BrowserWindow;
-    const path = require("path");
-    const url = require("url");
-
-    let current_win = BrowserWindow.getFocusedWindow();
-    const pos = current_win.getPosition();
-
-    const win = new BrowserWindow({
-      parent: current_win,
-      height: 300,
-      width: 800,
-      x: pos[0] + 100,
-      y: pos[1] + 100,
-    });
-    win.loadFile("memo.html");
-    win.openDevTools(); //opens inspect console
-    document.getElementById("max-btn").addEventListener("click", function (e) {
-      if (!win.isMaximized()) {
-        win.maximize();
-      } else {
-        win.unmaximize();
-      }
-    });
-  }
 
   return (
     <div className={styles.item} tabIndex="0">
