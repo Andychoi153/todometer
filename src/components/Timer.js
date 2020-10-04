@@ -1,19 +1,15 @@
 import React from "react";
 import { useItems, useAppReducer } from "../AppContext";
 import sandclock from "../img/sandclock.svg";
-import istyles from "./Item.module.scss";
-
 import styles from "./Timer.module.scss";
 import { remote } from "electron";
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 
 const Store = require("electron-store");
-
 const store = new Store();
 
 global.notificationSettings = {
@@ -25,25 +21,22 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: "80%",
+    color: "text.disable"
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+    color: "text.disable"
   },
+  
 }));
 // Timer bar for reset todo items
 function Timer() {
   const dispatch = useAppReducer();
-  let { routine, completed, pending, paused, timePercentage } = useItems();
-  const pausedAmount = paused.length;
-  const pendingAmount = pending.length;
-  const completedAmount = completed.length;
-  const routineAmount = routine.length;
-  const totalAmount = pendingAmount + completedAmount + routineAmount;
+  let { timePercentage } = useItems();
   const [time, setTime] = React.useState('');
 
   const classes = useStyles();
 
-  let completedPercentage = completedAmount / totalAmount;
   let timePercent = 1;
   if (timePercentage.length > 0) {
     timePercent = timePercentage[0].timePercentage;
@@ -65,18 +58,17 @@ function Timer() {
 
   return (
     <div>
-      <img src={sandclock} className={styles.sandclock} />
+
+    <img src={sandclock} className={styles.sandclock} />
       <FormControl className={classes.formControl}>
-      <InputLabel id="demo-simple-select-filled-label">Reset Term</InputLabel>
+      <InputLabel color="text.disable" >Reset Term</InputLabel>
         <Select
-          labelId="demo-simple-select-filled-label"
-          id="demo-simple-select-filled"
           value={time}
           onChange={handleChange}
         >
-          <MenuItem value={"quarterhour"}>Every 15 minuites</MenuItem>
-          <MenuItem value={"halfhour"}>Every 30 minuites</MenuItem>
-          <MenuItem value={"hour"}>Every 1 hours</MenuItem>
+          <MenuItem color="text.disable" value={"quarterhour"}>Every 15 minuites</MenuItem>
+          <MenuItem color="text.disable"  value={"halfhour"}>Every 30 minuites</MenuItem>
+          <MenuItem color="text.disable"  value={"hour"}>Every 1 hours</MenuItem>
         </Select>
         <br></br>
         <div className={styles.progress}>

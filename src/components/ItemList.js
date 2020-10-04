@@ -15,6 +15,7 @@ import Item from "./Item";
 import styles from "./ItemList.module.scss";
 import arrow from "../img/arrow.svg";
 import alldone from "../img/alldone.svg";
+import SlackAdd from "./SlackAdd"
 
 // List of todo items
 function ItemList() {
@@ -74,6 +75,7 @@ function ItemList() {
           </AccordionItem>
         )}
       </Accordion>
+      <SlackAdd />
     </div>
   );
 }

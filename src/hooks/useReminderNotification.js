@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import { remote } from "electron";
 import { useItems } from "../AppContext";
-import { useAppState, useAppReducer } from "../AppContext";
+import { useAppReducer } from "../AppContext";
+
+
+const Slack = require('slack-node'); 
+let webhookUri = remote.getGlobal("notificationSettings").webhookUri;
+
+let slack = new Slack();
+slack.setWebhook(webhookUri);
+
 
 function getTimeCondition(nd) {
   let condition = false;
@@ -39,6 +47,15 @@ export default function useReminderNotification() {
         } tasks to do today (${pending.length} incomplete, ${
           routine.length
         } paused for later)`;
+
+        slack.webhook({
+          channel: "joseph",
+          username: "webhookbot",
+          text: text
+        }, function(err, response) {
+          console.log(response);
+        });
+
         dispatch({ type: "RESET_ALL" });
         window.location.reload();
         new Notification("todometer reminder!", {

@@ -18,7 +18,14 @@ const store = new Store();
 global.notificationSettings = {
   resetNotification: store.get("reset") || true,
   reminderNotification: store.get("reminder") || "hour",
+  webhook_uri: store.get("webhook_uri") || ""
 };
+
+var Slack = require('slack-node');
+
+ 
+let slack = new Slack();
+slack.setWebhook(webhookUri);
 
 let mainWindow = {
   show: () => {
@@ -190,9 +197,17 @@ function menuSetup() {
           click: (e) => {
             let exNotification = new Notification({
               title: "todometer reminder!",
-              body: "Here's an example todometer notification!",
+              body: "Here's an example",
             });
             exNotification.show();
+            slack.webhook({
+              channel: "joseph",
+              username: "webhookbot",
+              text: "This is posted to #general and comes from a bot named webhookbot."
+            }, function(err, response) {
+              console.log(response);
+            });
+          
           },
         },
       ],
