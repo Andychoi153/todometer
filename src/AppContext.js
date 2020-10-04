@@ -125,6 +125,22 @@ const appStateReducer = (state, action) => {
       saveState(newState);
       return newState;
     }
+
+    case "ADD_MEMO": {
+      const newItems = state.items.map(i => {
+        if (i.key === action.item.key) {
+          return Object.assign({}, i, {
+            status: action.item.status,
+            memo: action.item.memo
+          });
+        }
+        return i;
+      });
+      const newState = { ...state, items: newItems };
+      saveState(newState);
+      return newState;
+    }
+
     default:
       return state;
   }
