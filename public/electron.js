@@ -22,10 +22,11 @@ global.notificationSettings = {
 };
 
 var Slack = require('slack-node');
+let webhook_uri = global.notificationSettings.webhook_uri;
 
  
 let slack = new Slack();
-slack.setWebhook(webhookUri);
+slack.setWebhook(webhook_uri);
 
 let mainWindow = {
   show: () => {

@@ -5,10 +5,10 @@ import { useAppReducer } from "../AppContext";
 
 
 const Slack = require('slack-node'); 
-let webhookUri = remote.getGlobal("notificationSettings").webhookUri;
+let webhook_uri = remote.getGlobal("notificationSettings").webhook_uri;
 
 let slack = new Slack();
-slack.setWebhook(webhookUri);
+slack.setWebhook(webhook_uri);
 
 
 function getTimeCondition(nd) {
