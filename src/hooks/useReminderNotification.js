@@ -4,11 +4,8 @@ import { useItems } from "../AppContext";
 import { useAppReducer } from "../AppContext";
 
 
-const Slack = require('slack-node'); 
-let webhook_uri = remote.getGlobal("notificationSettings").webhook_uri;
 
-let slack = new Slack();
-slack.setWebhook(webhook_uri);
+const Slack = require('slack-node'); 
 
 
 function getTimeCondition(nd) {
@@ -34,14 +31,20 @@ function getTimeCondition(nd) {
 export default function useReminderNotification() {
   const { pending, routine } = useItems();
   const dispatch = useAppReducer();
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
       let nd = new Date();
       dispatch({ type: "TIME_CHECK" });
+      
       // sends a notification if reminder notifications are enabled,
       // and todos are not completed
       if (getTimeCondition(nd) && ( routine.length > 0 || pending.length > 0)) {
+        let webhook_uri = remote.getGlobal("notificationSettings").webhook_uri;
+        let channel = remote.getGlobal("notificationSettings").channel;
+        let slack = new Slack();
+        slack.setWebhook(webhook_uri);
         let text = `Don't forget, you have ${
           pending.length + routine.length
         } tasks to do today (${pending.length} incomplete, ${
@@ -49,7 +52,7 @@ export default function useReminderNotification() {
         } paused for later)`;
 
         slack.webhook({
-          channel: "joseph",
+          channel: channel,
           username: "webhookbot",
           text: text
         }, function(err, response) {

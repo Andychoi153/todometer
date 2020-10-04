@@ -18,15 +18,9 @@ const store = new Store();
 global.notificationSettings = {
   resetNotification: store.get("reset") || true,
   reminderNotification: store.get("reminder") || "hour",
-  webhook_uri: store.get("webhook_uri") || ""
+  webhook_uri: store.get("webhook_uri") || "",
+  channel: store.get("channel") || ""
 };
-
-var Slack = require('slack-node');
-let webhook_uri = global.notificationSettings.webhook_uri;
-
- 
-let slack = new Slack();
-slack.setWebhook(webhook_uri);
 
 let mainWindow = {
   show: () => {
@@ -201,8 +195,15 @@ function menuSetup() {
               body: "Here's an example",
             });
             exNotification.show();
+            var Slack = require('slack-node');
+            let webhook_uri = global.notificationSettings.webhook_uri;
+            let channel = global.notificationSettings.channel;
+            
+            let slack = new Slack();
+            slack.setWebhook(webhook_uri);
+
             slack.webhook({
-              channel: "joseph",
+              channel: channel,
               username: "webhookbot",
               text: "This is posted to #general and comes from a bot named webhookbot."
             }, function(err, response) {

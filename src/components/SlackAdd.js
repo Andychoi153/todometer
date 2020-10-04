@@ -22,12 +22,17 @@ function SlackAdd() {
     global.notificationSettings = {
         webhook_uri: store.get("webhook_uri") || ""
       };
-      var webhook_uri = store.get("webhook_uri")
+      var webhook_uri = store.get("webhook_uri");
+      var channel = store.get("channel");
 
-    function addItem(value) {
+    function addWebHookURI(value) {
         remote.getGlobal("notificationSettings").webhook_uri = value;
         store.set("webhook_uri", value);
-      }
+    }
+    function addChannel(value) {
+        remote.getGlobal("notificationSettings").channel = value;
+        store.set("channel", value);
+    }
 
   return (
       <Accordion collapsible multiple>
@@ -39,7 +44,12 @@ function SlackAdd() {
             <AccordionPanel className={styles.panel}>
               {["test"].map((i) => {
                 return <form className={styles.form}>
-                <input onChange={(e) => addItem(e.currentTarget.value)} 
+                <input onChange={(e) => addChannel(e.currentTarget.value)} 
+                value={channel} 
+                ref={inputRef}
+                placeholder="Slack Channel or User" />
+
+                <input onChange={(e) => addWebHookURI(e.currentTarget.value)} 
                 value={webhook_uri} 
                 ref={inputRef}
                 placeholder="Slack web hook uri" />
